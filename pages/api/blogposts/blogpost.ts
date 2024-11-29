@@ -1,5 +1,4 @@
 // pages/api/blogposts/blogpost.ts
-
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/utils/db";
 import { Prisma, Post, Tag, Template, Rating, User } from "@prisma/client";
@@ -18,7 +17,88 @@ type PostWithRelations = Prisma.PostGetPayload<{
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
-    // [Your existing POST method code remains unchanged]
+    let { title, desc, postTags, postTemplates } = req.body as {
+      title: string;
+      desc: string;
+      postTags: string[];
+      postTemplates: number[];
+    };
+
+    const user: JwtPayload | null = verifyToken(req.headers.authorization);
+
+    if (!postTags) {
+      postTags = [];
+    }
+    if (!postTemplates) {
+      postTemplates = [];
+    }
+
+    // Authenticate
+    if (!user) {
+      return res.status(401).json({ error: "Visitors may not make posts." });
+    }
+
+    if (typeof title === "undefined") {
+      return res.status(400).json({ message: "Must provide a title." });
+    }
+
+    try {
+      const tags: Tag[] = [];
+      for (const tagName of postTags) {
+        // Check if the tag already exists
+        let tag = await prisma.tag.findUnique({
+          where: { name: tagName },
+        });
+
+        // Create a new tag if it doesn't exist
+        if (!tag) {
+          tag = await prisma.tag.create({
+            data: {
+              name: tagName,
+            },
+          });
+        }
+
+        tags.push(tag);
+      }
+
+      const templates: Template[] = [];
+      for (const templateId of postTemplates) {
+        // Check if the template already exists
+        const template = await prisma.template.findUnique({
+          where: { id: templateId },
+        });
+
+        // Return error if template not found
+        if (!template) {
+          res
+            .status(400)
+            .json({ error: `Could not find template ${templateId}.` });
+          return; // Exit the function
+        }
+
+        templates.push(template);
+      }
+
+      // Create new post
+      const post: Post = await prisma.post.create({
+        data: {
+          title: title,
+          desc: desc,
+          userId: user.userId,
+          postTags: {
+            connect: tags.map((tag) => ({ name: tag.name })),
+          },
+          postTemplates: {
+            connect: templates.map((template) => ({ id: template.id })),
+          },
+        },
+      });
+      res.status(201).json(post);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Failed to create post." });
+    }
   } else if (req.method === "GET") {
     // Get and process all search parameters
     const userName: string | undefined = req.query.userName as string;
@@ -43,10 +123,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const tagsRaw: string | undefined = req.query.tags as string;
     const tags: string[] = tagsRaw ? tagsRaw.split(", ") : [];
 
-    const templateSearch: string | undefined = req.query.templates as string;
+    const templatesRaw: string | undefined = req.query.templates as string;
+    const templates: string[] = templatesRaw ? templatesRaw.split(", ") : [];
 
     // Determines if posts with highest or lowest ratings show first
     const sortByControversial: boolean = req.query.sortByControversial === "true";
+    const sortByReports: string | undefined = req.query.sortByReports as string;
     const sortOption: string | undefined = req.query.sortOption as string;
 
     let posts: PostWithRelations[] = [];
@@ -58,15 +140,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       desc: desc ? { contains: desc } : undefined,
       isHidden: false,
       ...(tags.length > 0 && { postTags: { some: { name: { in: tags } } } }),
-      ...(templateSearch && {
-        postTemplates: {
-          some: {
-            title: {
-              contains: templateSearch,
-              mode: "insensitive", // Optional: makes the search case-insensitive
-            },
-          },
-        },
+      ...(templates.length > 0 && {
+        postTemplates: { some: { title: { in: templates } } },
       }),
     };
 
@@ -79,7 +154,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         postTemplates: true,
         ratings: true,
       },
-      orderBy: getOrderByClause(sortOption),
+      orderBy: getOrderByClause(sortOption, sortByReports),
     });
 
     let posts_ret: PostWithRelations[] = posts;
@@ -106,17 +181,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 function getOrderByClause(
-  sortOption: string | undefined
+  sortOption: string | undefined,
+  sortByReports: string | undefined
 ): Prisma.PostOrderByWithRelationInput | undefined {
-  if (sortOption === "mostReported") {
+  if (sortByReports) {
     return {
-      reportCount: "desc",
-    };
-  }
-
-  if (sortOption === "leastReported") {
-    return {
-      reportCount: "asc",
+      reportCount:
+        sortByReports === "desc" ? "desc" : "asc",
     };
   }
 
