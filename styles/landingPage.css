@@ -1,0 +1,135 @@
+/* src/styles/landingpagestyle.css */
+
+/* Header Section */
+.landing-header {
+  background-color: white;
+  color: #505a5b;
+  padding: 5rem 0; /* 20px equivalent to py-20 */
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.landing-header h1 {
+  font-size: 3rem; /* Equivalent to text-5xl */
+  font-family: 'Playfair Display', sans-serif;
+  font-weight: 800; /* font-extrabold */
+  letter-spacing: -0.025em;
+  margin-bottom: 1rem; /* mb-4 */
+}
+
+.landing-header p {
+  font-size: 1.25rem; /* text-xl */
+  max-width: 32rem; /* max-w-lg */
+  margin: 0 auto;
+  margin-bottom: 2rem; /* mb-8 */
+}
+
+.landing-header .button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* space-x-4 */
+}
+
+.landing-header .button {
+  padding: 1rem 2rem; /* px-8 py-3 */
+  border-radius: 0.5rem; /* rounded-lg */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.landing-header .button-primary {
+  background-color: #8f91a2;
+  color: white;
+}
+
+.landing-header .button-primary:hover {
+  background-color: #505a5b;
+}
+
+.landing-header .button-secondary {
+  background-color: #94b0da;
+  color: white;
+}
+
+.landing-header .button-secondary:hover {
+  background-color: #4971c1;
+}
+
+/* Features Section */
+.features-section {
+  padding: 5rem 0; /* py-20 */
+  background-color: white;
+  color: #505a5b;
+}
+
+.features-section h2 {
+  font-size: 2rem; /* text-3xl */
+  font-weight: 600; /* font-semibold */
+  margin-bottom: 2.5rem; /* mb-10 */
+  text-align: center;
+}
+
+.features-section .feature-card {
+  background-color: #dcedff;
+  padding: 2rem; /* p-8 */
+  border-radius: 1rem; /* rounded-lg */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.features-section .feature-card h3 {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: bold;
+  margin-bottom: 1rem; /* mb-4 */
+}
+
+.features-section .feature-card p {
+  color: #343f3e;
+}
+
+.feature-card.blue-background {
+    background-color: #94B0DA;
+  }
+
+/* Call to Action Section */
+.call-to-action {
+  padding: 4rem ; /* py-16 */
+  background-color: #505a5b;
+  color: white;
+  text-align: center;
+}
+
+.call-to-action h2 {
+  font-size: 2rem; /* text-3xl */
+  font-weight: 600; /* font-semibold */
+  margin-bottom: 1.5rem; /* mb-6 */
+}
+
+.call-to-action p {
+  font-size: 1.25rem; /* text-xl */
+  margin-bottom: 2rem; /* mb-8 */
+}
+
+.call-to-action .cta-button {
+  padding: 1rem 2.5rem; /* px-8 py-4 */
+  background-color: #94b0da;
+  color: white;
+  border-radius: 0.5rem; /* rounded-lg */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.call-to-action .cta-button:hover {
+  background-color: #4971c1;
+}
+
+/* Footer Section */
+footer {
+  background-color: #343f3e;
+  color: white;
+  padding: 1.5rem 0; /* py-6 */
+  margin-top: 5rem; /* mt-20 */
+  text-align: center;
+}

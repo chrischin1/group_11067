@@ -1,0 +1,105 @@
+.template-page {
+    padding: 5rem 2rem;
+    background-color: white;
+    color: #505a5b;
+    font-family: 'Playfair Display', sans-serif;
+  }
+  
+  .template-header {
+    background-color: white;
+    color: #505a5b;
+    padding: 5rem 0; /* 20px equivalent to py-20 */
+    text-align: center;
+    margin: 2rem;
+  }
+  
+  .template-header h1 {
+    font-size: 3rem; /* Equivalent to text-5xl */
+    font-family: 'Playfair Display', sans-serif;
+    font-weight: 600; /* font-extrabold */
+    letter-spacing: -0.025em;
+    margin-bottom: 1rem; /* mb-4 */
+  }
+  
+  .template-header p {
+    font-size: 1.25rem; /* text-xl */
+    max-width: 32rem; /* max-w-lg */
+    margin: 0 auto;
+    margin-bottom: 2rem; /* mb-8 */
+  }
+  
+  .template-search-input {
+    padding: 1rem;
+    width: 100%;
+    max-width: 400px;
+    font-size: 1rem;
+    border: 1px solid #8f91a2;
+    border-radius: 0.5rem;
+  }
+  
+  .template-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 0 2rem; /* Add horizontal padding to the grid */
+  }
+  
+  .template-card {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .template-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #505a5b;
+  }
+  
+  .template-card p {
+    color: #343f3e;
+    margin-bottom: 2rem;
+  }
+  
+  .template-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .template-tag {
+    background-color: #94b0da;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .pagination button {
+    padding: 0.5rem 1rem;
+    background-color: #94b0da;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    background-color: #dcedff;
+    cursor: not-allowed;
+  }
+  
+  .pagination span {
+    font-size: 1rem;
+    color: #505a5b;
+  }
+
+  

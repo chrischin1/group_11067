@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  firstName       String
+  lastName        String
+  password        String
+  email           String    @unique
+  phoneNumber     String 
+  avatar          String
+  role            String    @default("USER") // Possible values: 'USER', 'ADMIN'
+
+  posts           Post[]
+  comments        Comment[]
+  reports         Report[]
+  ratings         Rating[]
+  refreshTokens   RefreshToken[]
+  templates       Template[]
+}
+
+
+model Post {
+  id              Int       @id @default(autoincrement())
+  title           String
+  desc            String    @default("No description.")
+  userId          Int
+  user            User      @relation(fields: [userId], references: [id])
+  comments        Comment[]
+  flagged         Boolean   @default(false)
+  reports         Report[]
+  reportCount     Int       @default(0)
+  isHidden        Boolean   @default(false)
+  ratings         Rating[]
+
+  postTags        Tag[]     @relation("PostTags")
+  postTemplates   Template[] @relation("PostTemplates")
+}
+
+model Comment {
+  id              Int       @id @default(autoincrement())
+  parentId        Int
+  postId          Int
+  post            Post      @relation(fields: [postId], references: [id])
+  userId          Int
+  user            User      @relation(fields: [userId], references: [id])
+  body            String
+  flagged         Boolean   @default(false)
+  reports         Report[]
+  reportCount     Int       @default(0)
+  isHidden        Boolean   @default(false)
+  ratings         Rating[]
+}
+
+model Template {
+  id              Int       @id @default(autoincrement())
+  parentId        Int       
+  title           String
+  desc            String    @default("No description.")
+  body            String    // added this line to store the actual code
+  flagged         Boolean   @default(false)
+  userId          Int
+  author          User       @relation(fields:[userId], references: [id])
+
+  templateTags    Tag[]     @relation("TemplateTags")
+  templatePosts   Post[]    @relation("PostTemplates")
+}
+
+model Tag {
+  tagId           Int      @id @default(autoincrement())
+  name            String      @unique
+
+  posts           Post[]      @relation("PostTags")
+  templates       Template[]  @relation("TemplateTags")
+}
+
+
+model Rating {
+  id              Int       @id @default(autoincrement())
+  value           Int
+  userId          Int
+  user            User      @relation(fields: [userId], references: [id])
+  postId          Int
+  post            Post?     @relation(fields: [postId], references: [id])
+  commentId       Int?
+  comment         Comment?  @relation(fields: [commentId], references: [id])
+}
+
+model Report {
+  id          Int       @id @default(autoincrement())
+  reason      String
+  createdAt   DateTime  @default(now())
+  reporterId  Int
+  reporter    User      @relation(fields: [reporterId], references: [id])
+
+  postId      Int?
+  post        Post?     @relation(fields: [postId], references: [id])
+
+  commentId   Int?
+  comment     Comment?  @relation(fields: [commentId], references: [id])
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,175 @@
+/* CSS Reset for consistent styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Root font size */
+  html {
+    font-size: 16px; /* Default size; adjust for scaling */
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #dcedff;
+    color: #343f3e;
+    line-height: 1.5;
+    margin: 0; /* Remove extra spacing */
+    padding: 0; /* Remove extra spacing */
+  }
+  
+  /* Main container */
+  .container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto; /* Center the container horizontally */
+    width: 100%; /* Full width */
+    max-width: 1200px; /* Constrain the maximum width */
+    padding: 2rem; /* Add padding for breathing space */
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title */
+  .title {
+    font-size: 2rem;
+    color: #505a5b;
+    text-align: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .language-selector-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Space between dropdown and button */
+    margin-bottom: 1.25rem;
+  }
+  
+  
+  /* Language selector */
+  .language-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 1.25rem;
+  }
+  
+  .language-selector .label {
+    margin-bottom: 0.5rem;
+  }
+  
+  .language-selector .select {
+    font-size: 1rem;
+    padding: 0.5rem 0.625rem; /* 8px 10px */
+    border: 0.0625rem solid #94b0da;
+    border-radius: 0.25rem;
+    background-color: #ffffff;
+    color: #343f3e;
+    width: 100%;
+  }
+  
+  /* Monaco Editor container */
+  .monaco-editor-container {
+    margin-top: 1.25rem;
+    width: 100%;
+    border: 0.0625rem solid #94b0da;
+    border-radius: 0.375rem;
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Input container */
+  .input-container {
+    margin-top: 1.5rem;
+    width: 100%;
+  }
+  
+  .input-container .label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .input-container .textarea {
+    width: 100%;
+    padding: 0.625rem; /* 10px */
+    border: 0.0625rem solid #94b0da;
+    border-radius: 0.375rem;
+    background-color: #f5faff;
+    color: #343f3e;
+    font-family: 'Roboto', monospace;
+    resize: none;
+    font-size: 1rem;
+  }
+  
+  /* Button styles */
+  .button {
+    margin-top: 1.5rem;
+    padding: 0.625rem 1.25rem; /* 10px 20px */
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #94b0da;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #8f91a2;
+  }
+  
+  .button:disabled {
+    background-color: #dcedff;
+    color: #505a5b;
+    cursor: not-allowed;
+  }
+  
+  /* Output and error sections */
+  .output-container {
+    width: 100%;
+    margin-top: 2rem;
+  }
+  
+  .output-container .output-title,
+  .output-container .error-title {
+    font-size: 1.25rem;
+    color: #505a5b;
+    margin-bottom: 0.625rem;
+  }
+  
+  .output-container .output,
+  .output-container .error-output {
+    font-family: 'Courier New', monospace;
+    background-color: #f5faff;
+    color: #343f3e;
+    padding: 0.625rem; /* 10px */
+    border-radius: 0.375rem;
+    border: 0.0625rem solid #94b0da;
+    overflow-x: auto;
+  }
+  
+  .exit-code {
+    font-weight: bold;
+    color: #505a5b;
+    margin-top: 1rem;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 48rem) { /* 768px */
+    .container {
+      width: 95%;
+      padding: 1rem;
+    }
+  
+    .title {
+      font-size: 1.5rem;
+    }
+  
+    .button {
+      width: 100%;
+    }
+  }
+  
