@@ -1,4 +1,5 @@
 // pages/api/blogposts/blogpost.ts
+
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/utils/db";
 import { Prisma, Post, Tag, Template, Rating, User } from "@prisma/client";
@@ -123,12 +124,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const tagsRaw: string | undefined = req.query.tags as string;
     const tags: string[] = tagsRaw ? tagsRaw.split(", ") : [];
 
-    const templatesRaw: string | undefined = req.query.templates as string;
-    const templates: string[] = templatesRaw ? templatesRaw.split(", ") : [];
+    const templateSearch: string | undefined = req.query.templates as string;
 
     // Determines if posts with highest or lowest ratings show first
     const sortByControversial: boolean = req.query.sortByControversial === "true";
-    const sortByReports: string | undefined = req.query.sortByReports as string;
     const sortOption: string | undefined = req.query.sortOption as string;
 
     let posts: PostWithRelations[] = [];
@@ -140,8 +139,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       desc: desc ? { contains: desc } : undefined,
       isHidden: false,
       ...(tags.length > 0 && { postTags: { some: { name: { in: tags } } } }),
-      ...(templates.length > 0 && {
-        postTemplates: { some: { title: { in: templates } } },
+      ...(templateSearch && {
+        postTemplates: {
+          some: {
+            title: {
+              contains: templateSearch,
+            },
+          },
+        },
       }),
     };
 
@@ -154,7 +159,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         postTemplates: true,
         ratings: true,
       },
-      orderBy: getOrderByClause(sortOption, sortByReports),
+      orderBy: getOrderByClause(sortOption),
     });
 
     let posts_ret: PostWithRelations[] = posts;
@@ -181,13 +186,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 function getOrderByClause(
-  sortOption: string | undefined,
-  sortByReports: string | undefined
+  sortOption: string | undefined
 ): Prisma.PostOrderByWithRelationInput | undefined {
-  if (sortByReports) {
+  if (sortOption === "mostReported") {
     return {
-      reportCount:
-        sortByReports === "desc" ? "desc" : "asc",
+      reportCount: "desc",
+    };
+  }
+
+  if (sortOption === "leastReported") {
+    return {
+      reportCount: "asc",
     };
   }
 
